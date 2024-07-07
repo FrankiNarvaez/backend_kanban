@@ -72,7 +72,7 @@ const register = async (req, res) => {
     const salt = bcrypt.genSaltSync(10)
     const hashedPassword = bcrypt.hashSync(password, salt)
 
-    const newUser = await userModel.create({ username, email, password: hashedPassword })
+    const newUser = await userModel.createUser({ username, email, password: hashedPassword })
 
     const token = jwt.sign({
       email: newUser.email
@@ -97,8 +97,11 @@ const register = async (req, res) => {
 
 const kanban = async (req, res) => {
   try {
-    // const user = await userModel.findOneByEmail(email)
-    return res.send({ message: 'Kanban' })
+    const user = await userModel.findOneByEmail(req.email)
+    return res.json({
+      ok: true,
+      message: user.user_name
+    })
   } catch (error) {
     console.log(error)
     return res.status(500).json({

@@ -12,7 +12,7 @@ CREATE TABLE users (
 CREATE TABLE section (
     section_id SERIAL PRIMARY KEY,
     section_name VARCHAR(50) NOT NULL, -- El campo debe ser de 50 caracteres o menos
-    user_id INTEGER,
+    user_id INTEGER NOT NULL,
     FOREIGN KEY (user_id) REFERENCES users(user_id) -- Referencia a la clave foranea en user_id
 );
 
@@ -21,6 +21,6 @@ CREATE TABLE tasks (
     tasks_id SERIAL PRIMARY KEY,
     tasks_name VARCHAR(50) NOT NULL, -- El campo debe ser de 50 caracteres o menos
     tasks TEXT NOT NULL, -- TEXT permite crear guardar datos de datos de tamaño indefinido
-    section_id INTEGER,
+    section_id INTEGER NOT NULL     ,
     FOREIGN KEY (section_id) REFERENCES section(section_id) ON DELETE CASCADE ON UPDATE CASCADE -- Referencia a la clave foranea en section_id
 );

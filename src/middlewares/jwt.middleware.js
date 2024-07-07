@@ -13,8 +13,8 @@ export const verifyToken = (req, res, next) => {
 
   try {
     const { email } = jwt.verify(token, process.env.JWT_SECRET)
+    req.email = email
 
-    console.log(email)
     next()
   } catch (error) {
     console.log(error)

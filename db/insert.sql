@@ -15,11 +15,11 @@ INSERT INTO section (section_name, user_id) VALUES ('Section 5', 3);
 INSERT INTO section (section_name, user_id) VALUES ('Section 6', 1);
 
 -- Insert data into tasks table
-INSERT INTO tasks (task_name, description, section_id) VALUES ('task 1', 'description 1', 1);
-INSERT INTO tasks (task_name, description, section_id) VALUES ('task 2', 'description 1', 2);
-INSERT INTO tasks (task_name, description, section_id) VALUES ('task 3', 'description 1', 3);
-INSERT INTO tasks (task_name, description, section_id) VALUES ('task 4', 'description 1', 2);
-INSERT INTO tasks (task_name, description, section_id) VALUES ('task 5', 'description 1', 1);
-INSERT INTO tasks (task_name, description, section_id) VALUES ('task 6', 'description 1', 2);
-INSERT INTO tasks (task_name, description, section_id) VALUES ('task 7', 'description 1', 2);
-INSERT INTO tasks (task_name, description, section_id) VALUES ('task 8', 'description 1', 1);
+  INSERT INTO tasks (task_name, description, section_id) VALUES ('task 1', 'description 1', 1);
+  INSERT INTO tasks (task_name, description, section_id) VALUES ('task 2', 'description 1', 2);
+  INSERT INTO tasks (task_name, description, section_id) VALUES ('task 3', 'description 1', 3);
+  INSERT INTO tasks (task_name, description, section_id) VALUES ('task 4', 'description 1', 2);
+  INSERT INTO tasks (task_name, description, section_id) VALUES ('task 5', 'description 1', 1);
+  INSERT INTO tasks (task_name, description, section_id) VALUES ('task 6', 'description 1', 2);
+  INSERT INTO tasks (task_name, description, section_id) VALUES ('task 7', 'description 1', 2);
+  INSERT INTO tasks (task_name, description, section_id) VALUES ('task 8', 'description 1', 1);
