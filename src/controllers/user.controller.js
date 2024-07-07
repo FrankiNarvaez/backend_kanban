@@ -1,118 +1,195 @@
-import { userModel } from '../models/user.model.js'
-import bcrypt from 'bcryptjs'
-import jwt from 'jsonwebtoken'
+import { dbModel } from '../models/user.model.js'
 
-const login = async (req, res) => {
+// get Users of the database
+const getUsers = async (req, res) => {
   try {
-    const { email, password } = req.body
-
-    if (!email || !password) {
-      return res.status(400).json({
-        ok: false,
-        message: 'Missing fields'
-      })
-    }
-
-    const user = await userModel.findOneByEmail(email)
-
-    if (!user) {
-      return res.status(400).json({
-        message: 'User not found'
-      })
-    }
-
-    const isMatchPassword = bcrypt.compareSync(password, user.password)
-
-    if (!isMatchPassword) {
-      return res.status(400).json({
-        message: 'Invalid password'
-      })
-    }
-
-    const token = jwt.sign({
-      email: user.email
-    },
-    process.env.JWT_SECRET,
-    {
-      expiresIn: '1h'
-    })
-
-    return res.status(200).json({
-      ok: true,
-      message: token
-    })
+    const users = await dbModel.getUsers()
+    res.json(users)
   } catch (error) {
     console.log(error)
-    return res.status(500).json({
-      ok: false,
-      message: 'Internal server error'
+    res.status(500).json({
+      message: 'An error occurred while getting users'
+    })
+  }
+}
+// get a User of the database
+const getUser = async (req, res) => {
+  try {
+    const user = await dbModel.getUser(req.params.id)
+    res.json(user)
+  } catch (error) {
+    console.log(error)
+    res.status(500).json({
+      message: 'An error occurred while getting user'
+    })
+  }
+}
+// get a User's Sections of the database
+const getSections = async (req, res) => {
+  try {
+    const sections = await dbModel.getSections(req.params.id)
+    res.json(sections)
+  } catch (error) {
+    console.log(error)
+    res.status(500).json({
+      message: 'An error occurred while getting sections'
+    })
+  }
+}
+// get a User's Section of the database
+const getSection = async (req, res) => {
+  try {
+    const section = await dbModel.getSection(req.params.sectionId)
+    res.json(section)
+  } catch (error) {
+    console.log(error)
+    res.status(500).json({
+      message: 'An error occurred while getting section'
+    })
+  }
+}
+// get a User's Section's Tasks of the database
+const getTasks = async (req, res) => {
+  try {
+    const tasks = await dbModel.getTasks(req.params.id, req.params.sectionId)
+    res.json(tasks)
+  } catch (error) {
+    console.log(error)
+    res.status(500).json({
+      message: 'An error occurred while getting tasks'
+    })
+  }
+}
+// get a User's Section's Task of the database
+const getTask = async (req, res) => {
+  try {
+    const task = await dbModel.getTask(req.params.taskId)
+    res.json(task)
+  } catch (error) {
+    console.log(error)
+    res.status(500).json({
+      message: 'An error occurred while getting task'
+    })
+  }
+}
+// create a Section in the database related to a User
+const createSection = async (req, res) => {
+  try {
+    const section = await dbModel.createSection({
+      userId: req.params.id,
+      sectionName: req.body.sectionName
+    })
+    res.json(section)
+  } catch (error) {
+    console.log(error)
+    res.status(500).json({
+      message: 'An error occurred while creating section'
+    })
+  }
+}
+// create a Task in the database related to a Section
+const createTask = async (req, res) => {
+  try {
+    const task = await dbModel.createTask({
+      sectionId: req.params.sectionId,
+      taskName: req.body.taskName
+    })
+    res.json(task)
+  } catch (error) {
+    console.log(error)
+    res.status(500).json({
+      message: 'An error occurred while creating task'
     })
   }
 }
 
-const register = async (req, res) => {
+// Delete a Section from the database
+const deleteSection = async (req, res) => {
   try {
-    const { username, email, password } = req.body
-
-    if (!username || !email || !password) {
-      return res.status(400).json({
-        ok: false,
-        message: 'Missing fields'
-      })
-    }
-
-    const user = await userModel.findOneByEmail(email)
-    if (user) {
-      return res.status(400).json({
-        ok: false,
-        message: 'Email already exists'
-      })
-    }
-
-    const salt = bcrypt.genSaltSync(10)
-    const hashedPassword = bcrypt.hashSync(password, salt)
-
-    const newUser = await userModel.createUser({ username, email, password: hashedPassword })
-
-    const token = jwt.sign({
-      email: newUser.email
-    },
-    process.env.JWT_SECRET,
-    {
-      expiresIn: '1h'
-    })
-
-    return res.status(201).json({
-      ok: true,
-      message: token
+    await dbModel.deleteSection(req.params.sectionId)
+    res.json({
+      message: 'Section deleted successfully'
     })
   } catch (error) {
     console.log(error)
-    return res.status(500).json({
-      ok: false,
-      message: 'Internal server error'
+    res.status(500).json({
+      message: 'An error occurred while deleting section'
     })
   }
 }
 
-const kanban = async (req, res) => {
+// Delete a Task from the database
+const deleteTask = async (req, res) => {
   try {
-    const user = await userModel.findOneByEmail(req.email)
-    return res.json({
-      ok: true,
-      message: user.user_name
+    await dbModel.deleteTask(req.params.taskId)
+    res.json({
+      message: 'Task deleted successfully'
     })
   } catch (error) {
     console.log(error)
-    return res.status(500).json({
-      ok: false,
-      message: 'Internal server error'
+    res.status(500).json({
+      message: 'An error occurred while deleting task'
     })
   }
 }
 
-export const userController = {
-  login,
-  register,
-  kanban
+// Update a section_name of the database
+const updateNameSection = async (req, res) => {
+  try {
+    await dbModel.updateNameSection(req.params.sectionId, req.body.sectionName)
+    res.json({
+      message: 'Section updated successfully'
+    })
+  } catch (error) {
+    console.log(error)
+    res.status(500).json({
+      message: 'An error occurred while updating section'
+    })
+  }
+}
+
+// Update a task_name of the database
+const updateNameTask = async (req, res) => {
+  try {
+    await dbModel.updateNameTask(req.params.taskId, req.body.taskName )
+    res.json({
+      message: 'Task updated successfully'
+    })
+  } catch (error) {
+    console.log(error)
+    res.status(500).json({
+      message: 'An error occurred while updating task'
+    })
+  }
+}
+
+// Update a section_id of the task in the database
+const updateSectionIdTask = async (req, res) => {
+  try {
+    await dbModel.updateSectionIdTask(req.params.taskId, req.body.sectionId)
+    res.json({
+      message: 'Task updated successfully'
+    })
+  } catch (error) {
+    console.log(error)
+    res.status(500).json({
+      message: 'An error occurred while updating task'
+    })
+  }
+}
+
+export const dbController = {
+  getUsers,
+  getUser,
+  getSections,
+  getSection,
+  getTasks,
+  getTask,
+  createSection,
+  createTask,
+  deleteSection,
+  deleteTask,
+  updateNameSection,
+  updateNameTask,
+  updateSectionIdTask
 }

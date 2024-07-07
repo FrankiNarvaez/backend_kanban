@@ -1,7 +1,7 @@
 import express from 'express'
 import { PORT } from './config.js'
-import userRouter from './routes/user.routes.js'
-import dbRouter from './routes/db.routes.js'
+import userRouter from './routes/auth.routes.js'
+import dbRouter from './routes/user.routes.js'
 import 'dotenv/config'
 
 const app = express()
