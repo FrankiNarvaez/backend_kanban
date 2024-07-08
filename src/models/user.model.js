@@ -80,7 +80,7 @@ const updateSectionIdTask = async (taskId, sectionId) => {
   await pool.query('UPDATE tasks SET section_id = $1 WHERE task_id = $2', [sectionId, taskId])
 }
 
-export const dbModel = {
+export const userModel = {
   getUsers,
   getUser,
   getSections,

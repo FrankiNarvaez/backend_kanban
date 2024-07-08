@@ -13,7 +13,7 @@ const findOneByEmail = async (email) => {
   return rows[0]
 }
 
-export const userModel = {
+export const authModel = {
   createUser,
   findOneByEmail
 }

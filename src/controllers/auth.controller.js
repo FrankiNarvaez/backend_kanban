@@ -1,19 +1,20 @@
-import { userModel } from '../models/auth.model.js'
 import bcrypt from 'bcryptjs'
 import jwt from 'jsonwebtoken'
+import { authModel } from '../models/auth.model.js'
+import { validateLogin, validateRegister } from '../schemas/auth.schema.js'
 
 const login = async (req, res) => {
   try {
-    const { email, password } = req.body
+    const { success, data } = validateLogin(req.body)
 
-    if (!email || !password) {
+    if (!success) {
       return res.status(400).json({
         ok: false,
-        message: 'Missing fields'
+        message: 'Invalid data'
       })
     }
 
-    const user = await userModel.findOneByEmail(email)
+    const user = await authModel.findOneByEmail(data.email)
 
     if (!user) {
       return res.status(400).json({
@@ -21,7 +22,7 @@ const login = async (req, res) => {
       })
     }
 
-    const isMatchPassword = bcrypt.compareSync(password, user.password)
+    const isMatchPassword = bcrypt.compareSync(data.password, user.password)
 
     if (!isMatchPassword) {
       return res.status(400).json({
@@ -52,16 +53,18 @@ const login = async (req, res) => {
 
 const register = async (req, res) => {
   try {
-    const { username, email, password } = req.body
+    const { success, data } = validateRegister(req.body)
 
-    if (!username || !email || !password) {
+    if (!success) {
       return res.status(400).json({
         ok: false,
-        message: 'Missing fields'
+        message: 'Invalid data'
       })
     }
 
-    const user = await userModel.findOneByEmail(email)
+    const { username, email, password } = data
+
+    const user = await authModel.findOneByEmail(email)
     if (user) {
       return res.status(400).json({
         ok: false,
@@ -72,7 +75,7 @@ const register = async (req, res) => {
     const salt = bcrypt.genSaltSync(10)
     const hashedPassword = bcrypt.hashSync(password, salt)
 
-    const newUser = await userModel.createUser({ username, email, password: hashedPassword })
+    const newUser = await authModel.createUser({ username, email, password: hashedPassword })
 
     const token = jwt.sign({
       email: newUser.email
@@ -97,7 +100,7 @@ const register = async (req, res) => {
 
 const kanban = async (req, res) => {
   try {
-    const user = await userModel.findOneByEmail(req.email)
+    const user = await authModel.findOneByEmail(req.email)
     return res.json({
       ok: true,
       message: user.user_name

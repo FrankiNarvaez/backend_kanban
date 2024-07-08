@@ -1,9 +1,9 @@
-import { dbModel } from '../models/user.model.js'
+import { userModel } from '../models/user.model.js'
 
 // get Users of the database
 const getUsers = async (req, res) => {
   try {
-    const users = await dbModel.getUsers()
+    const users = await userModel.getUsers()
     res.json(users)
   } catch (error) {
     console.log(error)
@@ -15,7 +15,7 @@ const getUsers = async (req, res) => {
 // get a User of the database
 const getUser = async (req, res) => {
   try {
-    const user = await dbModel.getUser(req.params.id)
+    const user = await userModel.getUser(req.params.id)
     res.json(user)
   } catch (error) {
     console.log(error)
@@ -27,7 +27,7 @@ const getUser = async (req, res) => {
 // get a User's Sections of the database
 const getSections = async (req, res) => {
   try {
-    const sections = await dbModel.getSections(req.params.id)
+    const sections = await userModel.getSections(req.params.id)
     res.json(sections)
   } catch (error) {
     console.log(error)
@@ -39,7 +39,7 @@ const getSections = async (req, res) => {
 // get a User's Section of the database
 const getSection = async (req, res) => {
   try {
-    const section = await dbModel.getSection(req.params.sectionId)
+    const section = await userModel.getSection(req.params.sectionId)
     res.json(section)
   } catch (error) {
     console.log(error)
@@ -51,7 +51,7 @@ const getSection = async (req, res) => {
 // get a User's Section's Tasks of the database
 const getTasks = async (req, res) => {
   try {
-    const tasks = await dbModel.getTasks(req.params.id, req.params.sectionId)
+    const tasks = await userModel.getTasks(req.params.id, req.params.sectionId)
     res.json(tasks)
   } catch (error) {
     console.log(error)
@@ -63,7 +63,7 @@ const getTasks = async (req, res) => {
 // get a User's Section's Task of the database
 const getTask = async (req, res) => {
   try {
-    const task = await dbModel.getTask(req.params.taskId)
+    const task = await userModel.getTask(req.params.taskId)
     res.json(task)
   } catch (error) {
     console.log(error)
@@ -75,7 +75,7 @@ const getTask = async (req, res) => {
 // create a Section in the database related to a User
 const createSection = async (req, res) => {
   try {
-    const section = await dbModel.createSection({
+    const section = await userModel.createSection({
       userId: req.params.id,
       sectionName: req.body.sectionName
     })
@@ -90,7 +90,7 @@ const createSection = async (req, res) => {
 // create a Task in the database related to a Section
 const createTask = async (req, res) => {
   try {
-    const task = await dbModel.createTask({
+    const task = await userModel.createTask({
       sectionId: req.params.sectionId,
       taskName: req.body.taskName
     })
@@ -106,7 +106,7 @@ const createTask = async (req, res) => {
 // Delete a Section from the database
 const deleteSection = async (req, res) => {
   try {
-    await dbModel.deleteSection(req.params.sectionId)
+    await userModel.deleteSection(req.params.sectionId)
     res.json({
       message: 'Section deleted successfully'
     })
@@ -121,7 +121,7 @@ const deleteSection = async (req, res) => {
 // Delete a Task from the database
 const deleteTask = async (req, res) => {
   try {
-    await dbModel.deleteTask(req.params.taskId)
+    await userModel.deleteTask(req.params.taskId)
     res.json({
       message: 'Task deleted successfully'
     })
@@ -136,7 +136,7 @@ const deleteTask = async (req, res) => {
 // Update a section_name of the database
 const updateNameSection = async (req, res) => {
   try {
-    await dbModel.updateNameSection(req.params.sectionId, req.body.sectionName)
+    await userModel.updateNameSection(req.params.sectionId, req.body.sectionName)
     res.json({
       message: 'Section updated successfully'
     })
@@ -151,7 +151,7 @@ const updateNameSection = async (req, res) => {
 // Update a task_name of the database
 const updateNameTask = async (req, res) => {
   try {
-    await dbModel.updateNameTask(req.params.taskId, req.body.taskName )
+    await userModel.updateNameTask(req.params.taskId, req.body.taskName)
     res.json({
       message: 'Task updated successfully'
     })
@@ -166,7 +166,7 @@ const updateNameTask = async (req, res) => {
 // Update a section_id of the task in the database
 const updateSectionIdTask = async (req, res) => {
   try {
-    await dbModel.updateSectionIdTask(req.params.taskId, req.body.sectionId)
+    await userModel.updateSectionIdTask(req.params.taskId, req.body.sectionId)
     res.json({
       message: 'Task updated successfully'
     })
