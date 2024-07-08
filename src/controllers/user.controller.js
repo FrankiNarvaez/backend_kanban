@@ -3,6 +3,7 @@ import { userModel } from '../models/user.model.js'
 // get Users of the database
 const getUsers = async (req, res) => {
   try {
+    console.log(req.user_id)
     const users = await userModel.getUsers()
     res.json(users)
   } catch (error) {

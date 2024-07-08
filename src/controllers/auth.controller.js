@@ -15,7 +15,6 @@ const login = async (req, res) => {
     }
 
     const user = await authModel.findOneByEmail(data.email)
-    console.log(user)
 
     if (!user) {
       return res.status(400).json({
