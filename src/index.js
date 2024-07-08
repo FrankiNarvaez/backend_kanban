@@ -17,12 +17,12 @@ app.use(express.json())
 
 app.use(express.static(__dirname))
 
-app.use(userRouter)
-app.use(dbRouter)
-
 app.get('/documentation', (req, res) => {
   res.sendFile(path.join(__dirname, 'documentation.public.html'))
 })
+
+app.use(userRouter)
+app.use(dbRouter)
 
 app.listen(PORT, () => {
   console.clear()

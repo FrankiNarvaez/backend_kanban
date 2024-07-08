@@ -52,10 +52,9 @@
     <h1>Documentación de API</h1>
 
     <div class="endpoint">
-        <div class="endpoint-title">POST /api/auth/login</div>
+        <div class="endpoint-title">POST /login</div>
         <div class="endpoint-description">
             <p>Endpoint para iniciar sesión y obtener un token de acceso.</p>
-            <p>Recibe en el body: <code>{ "username": "string", "passwd": "string" }</code></p>
             <p>Devuelve en JSON:</p>
             <table class="endpoint-table">
                 <tr>
@@ -71,7 +70,7 @@
                     <td>JWT que representa la sesion</td>
                 </tr>
             </table>
-            <p>Establece un JWT en la cookie 'access-token'.</p>
+            <p>Establece un JWT en la cookie 'access_token'.</p>
             <p>Errores: </p>
             <p>400 - Request malhecho o malformado </p>
             <p>401 - Nombre o usuario incorrecto </p>
@@ -79,7 +78,7 @@
     </div>
 
     <div class="endpoint">
-        <div class="endpoint-title">POST /api/auth/logout</div>
+        <div class="endpoint-title">POST /logout</div>
         <div class="endpoint-description">
             <p>Endpoint para cerrar sesión.</p>
             <p>Borra la cookie de sesion.</p>
@@ -87,10 +86,10 @@
     </div>
 
     <div class="endpoint">
-        <div class="endpoint-title">POST /api/auth/register</div>
+        <div class="endpoint-title">POST /register</div>
         <div class="endpoint-description">
             <p>Endpoint para registrar un nuevo usuario.</p>
-            <p>Recibe en el body: <code>{ "username": "string", "passwd": "string" }</code></p>
+            <p>Recibe en el body: <code>{ "username": "string", "email": "string", "password": "string" }</code></p>
             <p>No devuelve ningún valor.</p>
             <p>Errores: </p>
             <p>400 - Request malhecho o malformado </p>
@@ -99,84 +98,183 @@
     </div>
 
     <div class="endpoint">
-        <div class="endpoint-title">GET /api/user</div>
+        <div class="endpoint-title">GET /users</div>
         <div class="endpoint-description">
-            <p>Endpoint para obtener datos del usuario.</p>
-            <p>Devuelve en JSON un objeto con los datos del usuario:</p>
-            <table class="endpoint-table">
-                <tr>
-                    <th>Nombre</th>
-                    <th>Descripción</th>
-                </tr>
-                <tr>
-                    <td>section_id</td>
-                    <td>Identificador de la sección del usuario</td>
-                </tr>
-                <tr>
-                    <td>cards</td>
-                    <td>Array de objetos de cartas del usuario</td>
-                </tr>
-            </table>
+            <p>Obtiene todos los usuarios.</p>
+            <p>Respuesta Exitosa:</p>
+            <pre><code>[
+  {
+    "user_id": "string",
+    "username": "string",
+    "email": "string"
+  }
+]</code></pre>
         </div>
     </div>
 
     <div class="endpoint">
-        <div class="endpoint-title">POST /api/user/section</div>
+        <div class="endpoint-title">GET /users/:id</div>
         <div class="endpoint-description">
-            <p>Endpoint para crear una nueva sección para el usuario.</p>
-            <p>Recibe en el body: <code>{ "title": "string" }</code></p>
-            <p>Devuelve en JSON un objeto con los detalles de la sección creada.</p>
+            <p>Obtiene los datos de un usuario específico.</p>
+            <p>Respuesta Exitosa:</p>
+            <pre><code>{
+  "user_id": "string",
+  "username": "string",
+  "email": "string"
+}</code></pre>
         </div>
-        <p>Errores: </p>
-        <p>400 - Mal request, falta el titulo </p>
     </div>
 
     <div class="endpoint">
-        <div class="endpoint-title">DELETE /api/user/section</div>
+        <div class="endpoint-title">GET /users/:id/sections</div>
         <div class="endpoint-description">
-            <p>Endpoint para eliminar una sección del usuario.</p>
-            <p>Recibe en el body: <code>{ "section_id": "string" }</code></p>
-            <p>Devuelve en JSON un objeto con los detalles de la sección eliminada.</p>
+            <p>Obtiene todas las secciones de un usuario.</p>
+            <p>Respuesta Exitosa:</p>
+            <pre><code>[
+  {
+    "section_id": "string",
+    "section_name": "string"
+  }
+]</code></pre>
         </div>
-        <p>Errores: </p>
-        <p>401 - UUID incorrecta </p>
-        <p>500 - Seccion inexistente </p>
-        <p>403 - Seccion prohibida, modificacion no autorizada </p>
     </div>
 
     <div class="endpoint">
-        <div class="endpoint-title">POST /api/user/card</div>
+        <div class="endpoint-title">GET /users/:id/sections/:sectionId</div>
         <div class="endpoint-description">
-            <p>Endpoint para crear una nueva carta para el usuario.</p>
-            <p>Recibe en el body: <code>{ "title": "string", "content": "string", "section_id": "string" }</code></p>
-            <p>Devuelve en JSON un objeto con los detalles de la carta creada.</p>
+            <p>Obtiene una sección específica de un usuario.</p>
+            <p>Respuesta Exitosa:</p>
+            <pre><code>{
+  "section_id": "string",
+  "section_name": "string"
+}</code></pre>
         </div>
-        <p>Errores: </p>
-        <p>400 - Mal request, faltan campos </p>
-        <p>401 - UUID incorrecta </p>
-        <p>403 - Seccion prohibida, modificacion no autorizada </p>
     </div>
 
     <div class="endpoint">
-        <div class="endpoint-title">DELETE /api/user/card</div>
+        <div class="endpoint-title">GET /users/:id/sections/:sectionId/tasks</div>
         <div class="endpoint-description">
-            <p>Endpoint para eliminar una carta del usuario.</p>
-            <p>Recibe en el body: <code>{ "card_id": "string" }</code></p>
-            <p>Devuelve en JSON un objeto con los detalles de la carta eliminada.</p>
+            <p>Obtiene todas las tareas de una sección específica de un usuario.</p>
+            <p>Respuesta Exitosa:</p>
+            <pre><code>[
+  {
+    "task_id": "string",
+    "description": "string"
+  }
+]</code></pre>
         </div>
-        <p>Errores: </p>
-        <p>400 - Reques malformado </p>
-        <p>401 - UUID incorrecta </p>
-        <p>500 - La carta no existe </p>
-        <p>403 - Seccion prohibida, modificacion no autorizada </p>
     </div>
 
     <div class="endpoint">
-        <div class="endpoint-title">PATCH /api/user/account</div>
+        <div class="endpoint-title">GET /users/:id/sections/:sectionId/tasks/:taskId</div>
         <div class="endpoint-description">
-            <p>Endpoint para actualizar la cuenta de usuario.</p>
-            <p>Recibe en el body: <code>{ "username": "string", "email": "string", "password": "string" }</code></p>
-            <p>Devuelve en JSON un objeto con los datos de usuario actualizados.</p>
+            <p>Obtiene una tarea específica de una sección de un usuario.</p>
+            <p>Respuesta Exitosa:</p>
+            <pre><code>{
+  "task_id": "string",
+  "description": "string"
+}</code></pre>
+        </div>
+    </div>
+
+    <div class="endpoint">
+        <div class="endpoint-title">POST /users/:id/sections</div>
+        <div class="endpoint-description">
+            <p>Crea una nueva sección para un usuario.</p>
+            <p>Cuerpo de la Solicitud:</p>
+            <pre><code>{
+  "sectionName": "string"
+}</code></pre>
+            <p>Respuesta Exitosa:</p>
+            <pre><code>{
+  "section_id": "string",
+  "section_name": "string",
+  "user_id": "string"
+}</code></pre>
+        </div>
+    </div>
+
+    <div class="endpoint">
+        <div class="endpoint-title">POST /users/:id/sections/:sectionId/tasks</div>
+        <div class="endpoint-description">
+            <p>Crea una nueva tarea para una sección específica de un usuario.</p>
+            <p>Cuerpo de la Solicitud:</p>
+            <pre><code>{
+  "taskName": "string"
+}</code></pre>
+            <p>Respuesta Exitosa:</p>
+            <pre><code>{
+  "task_id": "string",
+  "task_name": "string",
+  "section_id": "string"
+}</code></pre>
+        </div>
+    </div>
+
+    <div class="endpoint">
+        <div class="endpoint-title">DELETE /users/:id/sections/:sectionId</div>
+        <div class="endpoint-description">
+            <p>Elimina una sección específica de un usuario.</p>
+            <p>Respuesta Exitosa:</p>
+            <pre><code>{
+  "message": "Section deleted successfully"
+}</code></pre>
+        </div>
+    </div>
+
+    <div class="endpoint">
+        <div class="endpoint-title">DELETE /users/:id/sections/:sectionId/tasks/:taskId</div>
+        <div class="endpoint-description">
+            <p>Elimina una tarea específica de una sección de un usuario.</p>
+            <p>Respuesta Exitosa:</p>
+            <pre><code>{
+  "message": "Task deleted successfully"
+}</code></pre>
+        </div>
+    </div>
+
+    <div class="endpoint">
+        <div class="endpoint-title">PATCH /users/:id/sections/:sectionId</div>
+        <div class="endpoint-description">
+            <p>Actualiza el nombre de una sección específica de un usuario.</p>
+            <p>Cuerpo de la Solicitud:</p>
+            <pre><code>{
+  "sectionName": "string"
+}</code></pre>
+            <p>Respuesta Exitosa:</p>
+            <pre><code>{
+  "message": "Section updated successfully"
+}</code></pre>
+        </div>
+    </div>
+
+    <div class="endpoint">
+        <div class="endpoint-title">PATCH /users/:id/sections/:sectionId/tasks/:taskId</div>
+        <div class="endpoint-description">
+            <p>Actualiza el nombre de una tarea específica de una sección de un usuario.</p>
+            <p>Cuerpo de la Solicitud:</p>
+            <pre><code>{
+  "taskName": "string"
+}</code></pre>
+            <p>Respuesta Exitosa:</p>
+            <pre><code>{
+  "message": "Task updated successfully"
+}</code></pre>
+        </div>
+    </div>
+
+    <div class="endpoint">
+        <div class="endpoint-title">PATCH /users/:id/sections/:sectionId/tasks/:taskId</div>
+        <div class="endpoint-description">
+            <p>Actualiza la sección de una tarea específica de un usuario.</p>
+            <p>Cuerpo de la Solicitud:</p>
+            <pre><code>{
+  "sectionId": "string"
+}</code></pre>
+            <p>Respuesta Exitosa:</p>
+            <pre><code>{
+  "message": "Task updated successfully"
+}</code></pre>
         </div>
     </div>
 
