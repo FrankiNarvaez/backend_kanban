@@ -82,13 +82,22 @@ const register = async (req, res) => {
     },
     process.env.JWT_SECRET,
     {
-      expiresIn: '1h'
+      expiresIn: '5h'
     })
 
-    return res.status(201).json({
-      ok: true,
-      message: token
+    return res.cookie('access-token', token, { httpOnly: true, sameSite: 'strict' }).send({ user_id: newUser.user_id, token })
+  } catch (error) {
+    console.log(error)
+    return res.status(500).json({
+      ok: false,
+      message: 'Internal server error'
     })
+  }
+}
+
+const logout = async (req, res) => {
+  try {
+    return res.clearCookie('access_token').json({ message: 'Logout successful' })
   } catch (error) {
     console.log(error)
     return res.status(500).json({
@@ -117,5 +126,6 @@ const kanban = async (req, res) => {
 export const userController = {
   login,
   register,
+  logout,
   kanban
 }
