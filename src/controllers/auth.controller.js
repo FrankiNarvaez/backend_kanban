@@ -15,6 +15,7 @@ const login = async (req, res) => {
     }
 
     const user = await authModel.findOneByEmail(data.email)
+    console.log(user)
 
     if (!user) {
       return res.status(400).json({
@@ -31,17 +32,14 @@ const login = async (req, res) => {
     }
 
     const token = jwt.sign({
-      email: user.email
+      user_id: user.user_id
     },
     process.env.JWT_SECRET,
     {
-      expiresIn: '1h'
+      expiresIn: '5h'
     })
 
-    return res.status(200).json({
-      ok: true,
-      message: token
-    })
+    res.cookie('access_token', token, { httpOnly: true, sameSite: 'strict' }).send({ user_id: user.user_id, token })
   } catch (error) {
     console.log(error)
     return res.status(500).json({
@@ -78,14 +76,17 @@ const register = async (req, res) => {
     const newUser = await authModel.createUser({ username, email, password: hashedPassword })
 
     const token = jwt.sign({
-      email: newUser.email
+      user_id: newUser.user_id
     },
     process.env.JWT_SECRET,
     {
       expiresIn: '5h'
     })
 
-    return res.cookie('access-token', token, { httpOnly: true, sameSite: 'strict' }).send({ user_id: newUser.user_id, token })
+    return res.status(200).json({
+      ok: true,
+      message: token
+    })
   } catch (error) {
     console.log(error)
     return res.status(500).json({
@@ -109,10 +110,19 @@ const logout = async (req, res) => {
 
 const kanban = async (req, res) => {
   try {
-    const user = await authModel.findOneByEmail(req.email)
+    const { cookies } = req
+
+    if (!cookies.access_token) {
+      return res.status(401).json({
+        ok: false,
+        message: 'Unauthorized'
+      })
+    }
+
+    const user = await authModel.findOneById(req.user_id)
     return res.json({
       ok: true,
-      message: user.user_name
+      message: user.user_id
     })
   } catch (error) {
     console.log(error)

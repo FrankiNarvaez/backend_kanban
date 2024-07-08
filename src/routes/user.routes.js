@@ -1,29 +1,30 @@
 import { Router } from 'express'
-import { dbController } from '../controllers/user.controller.js'
+import { userController } from '../controllers/user.controller.js'
+import { verifyToken } from '../middlewares/jwt.middleware.js'
 
 const router = Router()
-
+router.use(verifyToken)
 // Verbos HTTP
 
 // GET
-router.get('/users', dbController.getUsers)
-router.get('/users/:id', dbController.getUser)
-router.get('/users/:id/sections', dbController.getSections)
-router.get('/users/:id/sections/:sectionId', dbController.getSection)
-router.get('/users/:id/sections/:sectionId/tasks', dbController.getTasks)
-router.get('/users/:id/sections/:sectionId/tasks/:taskId', dbController.getTask)
+router.get('/users', userController.getUsers)
+router.get('/users/:id', userController.getUser)
+router.get('/users/:id/sections', userController.getSections)
+router.get('/users/:id/sections/:sectionId', userController.getSection)
+router.get('/users/:id/sections/:sectionId/tasks', userController.getTasks)
+router.get('/users/:id/sections/:sectionId/tasks/:taskId', userController.getTask)
 
 // POST
-router.post('/users/:id/sections', dbController.createSection)
-router.post('/users/:id/sections/:sectionId/tasks', dbController.createTask)
+router.post('/users/:id/sections', userController.createSection)
+router.post('/users/:id/sections/:sectionId/tasks', userController.createTask)
 
 // DELETE
-router.delete('/users/:id/sections/:sectionId', dbController.deleteSection)
-router.delete('/users/:id/sections/:sectionId/tasks/:taskId', dbController.deleteTask)
+router.delete('/users/:id/sections/:sectionId', userController.deleteSection)
+router.delete('/users/:id/sections/:sectionId/tasks/:taskId', userController.deleteTask)
 
 // PATCH
-router.patch('/users/:id/sections/:sectionId', dbController.updateNameSection)
-router.patch('/users/:id/sections/:sectionId/tasks/:taskId', dbController.updateNameTask)
-router.patch('/users/:id/sections/:sectionId/tasks/:taskId', dbController.updateSectionIdTask)
+router.patch('/users/:id/sections/:sectionId', userController.updateNameSection)
+router.patch('/users/:id/sections/:sectionId/tasks/:taskId', userController.updateNameTask)
+router.patch('/users/:id/sections/:sectionId/tasks/:taskId', userController.updateSectionIdTask)
 
 export default router

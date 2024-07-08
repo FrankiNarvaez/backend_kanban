@@ -178,7 +178,7 @@ const updateSectionIdTask = async (req, res) => {
   }
 }
 
-export const dbController = {
+export const userController = {
   getUsers,
   getUser,
   getSections,
