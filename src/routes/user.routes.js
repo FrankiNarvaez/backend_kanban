@@ -24,7 +24,30 @@ router.delete('/users/:id/sections/:sectionId/tasks/:taskId', userController.del
 
 // PATCH
 router.patch('/users/:id/sections/:sectionId', userController.updateNameSection)
-router.patch('/users/:id/sections/:sectionId/tasks/:taskId', userController.updateNameTask)
-router.patch('/users/:id/sections/:sectionId/tasks/:taskId', userController.updateSectionIdTask)
+router.patch('/users/:id/sections/:sectionId/tasksI/:taskId', userController.updateNameTask)
+router.patch('/users/:id/sections/:sectionId/tasksU/:taskId', userController.updateSectionIdTask)
+
+// Simplified version
+
+// GET
+// router.get('/users', userController.getUsers)
+// router.get('/user', userController.getUser)
+// touter.get('/sections', userController.getSections)
+// router.get('/section/:sectionId', userController.getSection)
+// router.get('/tasks', userController.getTasks)
+// router.get('/task/:taskId', userController.getTask)
+
+// POST
+// router.post('/section', userController.createSection)
+// router.post('/task', userController.createTask)
+
+// DELETE
+// router.delete('/section/:sectionId', userController.deleteSection)
+// router.delete('/task/:taskId', userController.deleteTask)
+
+// PATCH
+// router.patch('/section/:sectionId', userController.updateNameSection)
+// router.patch('/taskN/:taskId', userController.updateNameTask)
+// router.patch('/taskI/:taskId', userController.updateSectionIdTask)
 
 export default router

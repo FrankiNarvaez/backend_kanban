@@ -1,6 +1,6 @@
 import express from 'express'
-import userRouter from './routes/auth.routes.js'
-import dbRouter from './routes/user.routes.js'
+import authRouter from './routes/auth.routes.js'
+import userRouter from './routes/user.routes.js'
 import cookieParser from 'cookie-parser'
 import path from 'path'
 
@@ -17,12 +17,16 @@ app.use(express.json())
 
 app.use(express.static(__dirname))
 
+app.use('/', (req, res) => {
+  res.send('<h1>Welcome. add "/documentation" to the URL for watch the documentation</h1>')
+})
+
 app.get('/documentation', (req, res) => {
   res.sendFile(path.join(__dirname, 'documentation.public.html'))
 })
 
-app.use(userRouter)
-app.use(dbRouter)
+app.use(authRouter)
+app.use('/api/', userRouter)
 
 app.listen(PORT, () => {
   console.clear()

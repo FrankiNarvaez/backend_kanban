@@ -16,6 +16,11 @@ const getUsers = async (req, res) => {
 // get a User of the database
 const getUser = async (req, res) => {
   try {
+    if (req.user_id !== req.params.id) {
+      return res.status(403).json({
+        message: 'Forbidden'
+      })
+    }
     const user = await userModel.getUser(req.params.id)
     res.json(user)
   } catch (error) {
@@ -28,6 +33,12 @@ const getUser = async (req, res) => {
 // get a User's Sections of the database
 const getSections = async (req, res) => {
   try {
+    if (req.user_id !== req.params.id) {
+      return res.status(403).json({
+        message: 'Forbidden'
+      })
+    }
+
     const sections = await userModel.getSections(req.params.id)
     res.json(sections)
   } catch (error) {
@@ -40,6 +51,12 @@ const getSections = async (req, res) => {
 // get a User's Section of the database
 const getSection = async (req, res) => {
   try {
+    if (req.user_id !== req.params.id) {
+      return res.status(403).json({
+        message: 'Forbidden'
+      })
+    }
+
     const section = await userModel.getSection(req.params.sectionId)
     res.json(section)
   } catch (error) {
@@ -52,6 +69,12 @@ const getSection = async (req, res) => {
 // get a User's Section's Tasks of the database
 const getTasks = async (req, res) => {
   try {
+    if (req.user_id !== req.params.id) {
+      return res.status(403).json({
+        message: 'Forbidden'
+      })
+    }
+
     const tasks = await userModel.getTasks(req.params.id, req.params.sectionId)
     res.json(tasks)
   } catch (error) {
@@ -64,6 +87,12 @@ const getTasks = async (req, res) => {
 // get a User's Section's Task of the database
 const getTask = async (req, res) => {
   try {
+    if (req.user_id !== req.params.id) {
+      return res.status(403).json({
+        message: 'Forbidden'
+      })
+    }
+
     const task = await userModel.getTask(req.params.taskId)
     res.json(task)
   } catch (error) {
@@ -76,6 +105,12 @@ const getTask = async (req, res) => {
 // create a Section in the database related to a User
 const createSection = async (req, res) => {
   try {
+    if (req.user_id !== req.params.id) {
+      return res.status(403).json({
+        message: 'Forbidden'
+      })
+    }
+
     const section = await userModel.createSection({
       userId: req.params.id,
       sectionName: req.body.sectionName
@@ -91,6 +126,12 @@ const createSection = async (req, res) => {
 // create a Task in the database related to a Section
 const createTask = async (req, res) => {
   try {
+    if (req.user_id !== req.params.id) {
+      return res.status(403).json({
+        message: 'Forbidden'
+      })
+    }
+
     const task = await userModel.createTask({
       sectionId: req.params.sectionId,
       taskName: req.body.taskName
@@ -107,6 +148,12 @@ const createTask = async (req, res) => {
 // Delete a Section from the database
 const deleteSection = async (req, res) => {
   try {
+    if (req.user_id !== req.params.id) {
+      return res.status(403).json({
+        message: 'Forbidden'
+      })
+    }
+
     await userModel.deleteSection(req.params.sectionId)
     res.json({
       message: 'Section deleted successfully'
@@ -122,6 +169,12 @@ const deleteSection = async (req, res) => {
 // Delete a Task from the database
 const deleteTask = async (req, res) => {
   try {
+    if (req.user_id !== req.params.id) {
+      return res.send(403).json({
+        message: 'Forbidden'
+      })
+    }
+
     await userModel.deleteTask(req.params.taskId)
     res.json({
       message: 'Task deleted successfully'
@@ -137,6 +190,12 @@ const deleteTask = async (req, res) => {
 // Update a section_name of the database
 const updateNameSection = async (req, res) => {
   try {
+    if (req.user_id !== req.params.id) {
+      return res.status(403).json({
+        message: 'Forbidden'
+      })
+    }
+
     await userModel.updateNameSection(req.params.sectionId, req.body.sectionName)
     res.json({
       message: 'Section updated successfully'
@@ -152,6 +211,12 @@ const updateNameSection = async (req, res) => {
 // Update a task_name of the database
 const updateNameTask = async (req, res) => {
   try {
+    if (req.user_id !== req.params.id) {
+      return res.status(403).json({
+        message: 'Forbidden'
+      })
+    }
+
     await userModel.updateNameTask(req.params.taskId, req.body.taskName)
     res.json({
       message: 'Task updated successfully'
@@ -167,6 +232,12 @@ const updateNameTask = async (req, res) => {
 // Update a section_id of the task in the database
 const updateSectionIdTask = async (req, res) => {
   try {
+    if (req.user_id !== req.params.id) {
+      return res.status(403).json({
+        message: 'Forbidden'
+      })
+    }
+
     await userModel.updateSectionIdTask(req.params.taskId, req.body.sectionId)
     res.json({
       message: 'Task updated successfully'
