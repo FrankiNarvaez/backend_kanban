@@ -3,9 +3,8 @@ import { Response } from 'express'
 import { RequestWithUserId } from '../types'
 
 // get Users of the database
-const getUsers = async (req: RequestWithUserId, res: Response): Promise<void> => {
+const getUsers = async (_req: RequestWithUserId, res: Response): Promise<void> => {
   try {
-    console.log(req.user_id)
     const users = await userModel.getUsers()
     res.json(users)
   } catch (error) {
@@ -17,12 +16,15 @@ const getUsers = async (req: RequestWithUserId, res: Response): Promise<void> =>
 // get a User of the database
 const getUser = async (req: RequestWithUserId, res: Response): Promise<any> => {
   try {
-    if (req.body.user_id !== req.params.id) {
+    const idParams = parseInt(req.params.id)
+
+    if (req.user_id !== idParams) {
       return res.status(403).json({
         message: 'Forbidden'
       })
     }
-    const user = await userModel.getUser(req.body.id)
+
+    const user = await userModel.getUser(idParams)
     res.json(user)
   } catch (error) {
     console.log(error)

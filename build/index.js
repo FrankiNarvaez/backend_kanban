@@ -6,9 +6,13 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const auth_router_1 = __importDefault(require("./routes/auth.router"));
 const user_router_1 = __importDefault(require("./routes/user.router"));
+const cookie_parser_1 = __importDefault(require("cookie-parser"));
 const PORT = 3000;
 const app = (0, express_1.default)();
+app.disable('x-powered-by');
+app.use((0, cookie_parser_1.default)());
 app.use(express_1.default.json());
+app.use(express_1.default.text());
 app.get('/', (_req, res) => {
     console.log('Hello my friend');
     res.send('Hello World!');

@@ -2,12 +2,8 @@ import bcrypt from 'bcryptjs'
 import jwt from 'jsonwebtoken'
 import { authModel } from '../models/auth.model'
 import { validateLogin, validateRegister } from '../schemas/auth.schema'
-import { ResponseValidate, User } from '../types'
+import { ResponseValidate, User, RequestWithUserId } from '../types'
 import { Request, Response } from 'express'
-
-interface AddUserId {
-  user_id: number
-}
 
 const login = async (req: Request, res: Response): Promise<Response> => {
   try {
@@ -74,7 +70,7 @@ const logout = (_: Request, res: Response): Response => {
   }
 }
 
-const kanban = async (req: Request & AddUserId, res: Response): Promise<any> => {
+const kanban = async (req: RequestWithUserId, res: Response): Promise<any> => {
   try {
     const token: string = req.cookies.access_token
 
@@ -86,7 +82,6 @@ const kanban = async (req: Request & AddUserId, res: Response): Promise<any> => 
     }
 
     const user: User = await authModel.findUserById(req.user_id) as User
-    console.log(user)
     return res.json({
       ok: true,
       message: user.user_id

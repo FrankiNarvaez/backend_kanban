@@ -1,8 +1,8 @@
 import { Router } from 'express'
 import { userController } from '../controllers/user.controller'
 import { verifyToken } from '../middlewares/jwt.middleware'
-const router = Router()
 
+const router = Router()
 router.use(verifyToken)
 // Verbos HTTP
 
