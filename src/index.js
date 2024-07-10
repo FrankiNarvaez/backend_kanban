@@ -17,16 +17,18 @@ app.use(express.json())
 
 app.use(express.static(__dirname))
 
-app.use('/', (req, res) => {
-  res.send('<h1>Welcome. add "/documentation" to the URL for watch the documentation</h1>')
-})
-
 app.get('/documentation', (req, res) => {
+  console.log('into here /documentation')
   res.sendFile(path.join(__dirname, 'documentation.public.html'))
 })
 
 app.use(authRouter)
 app.use('/api/', userRouter)
+
+app.use('/s', (req, res) => {
+  console.log('into here /')
+  res.send('<h1>Welcome. add "/documentation" to the URL for watch the documentation</h1>')
+})
 
 app.listen(PORT, () => {
   console.clear()
