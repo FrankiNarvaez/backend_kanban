@@ -26,13 +26,14 @@ const login = async (req: Request, res: Response): Promise<Response> => {
 
     const secretJWT: string = process.env.JWT_SECRET as string
 
-    const token = jwt.sign({ user_id: user.user_id }, secretJWT, { expiresIn: '1h' })
+    const token = jwt.sign({ user_id: user.user_id }, secretJWT, { expiresIn: '5h' })
 
     return res.cookie('access_token', token, { httpOnly: true, sameSite: 'strict' }).send({ message: 'Logged in' })
   } catch (error) {
     return res.status(500).json({ error: 'Internal server error' })
   }
 }
+
 const register = async (req: Request, res: Response): Promise<Response> => {
   try {
     const responseValidated: ResponseValidate = validateRegister(req.body) as ResponseValidate
@@ -69,29 +70,28 @@ const logout = (_: Request, res: Response): Response => {
   }
 }
 
-const kanban = (req: Request, _: Response): any => {
-  // try {
-  const { cookies } = req
-  console.log(cookies)
-  //   if (!cookies.access_token) {
-  //     return res.status(401).json({
-  //       ok: false,
-  //       message: 'Unauthorized'
-  //     })
-  //   }
+const kanban = async (req: Request, res: Response): Promise<any> => {
+  try {
+    const token: string = req.cookies.access_token
 
-  //   const user = await authModel.findOneById(req.user_id)
-  //   return res.json({
-  //     ok: true,
-  //     message: user.user_id
-  //   })
-  // } catch (error) {
-  //   return res.status(500).json({
-  //     ok: false,
-  //     message: 'Internal server error'
-  //   })
-  // }
-  // res.send('Hello World!')
+    if (token === undefined) {
+      return res.status(401).json({
+        ok: false,
+        message: 'Unauthorized'
+      })
+    }
+
+    const user: User = await authModel.findUserById((req as any).user_id) as User
+    return res.json({
+      ok: true,
+      message: user.user_id
+    })
+  } catch (error) {
+    return res.status(500).json({
+      ok: false,
+      message: 'Internal server error'
+    })
+  }
 }
 
 export const AuthController = {

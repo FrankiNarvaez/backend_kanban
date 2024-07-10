@@ -1,4 +1,4 @@
-import { userModel } from '../models/user.model'
+/* import { userModel } from '../models/user.model'
 import { Request, Response } from 'express'
 // get Users of the database
 const getUsers = async (req: Request, res: Response): Promise<void> => {
@@ -265,3 +265,4 @@ export const userController = {
   updateNameTask,
   updateSectionIdTask
 }
+ */

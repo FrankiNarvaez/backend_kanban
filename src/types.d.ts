@@ -32,6 +32,10 @@ export interface Task {
   section_id: number
 }
 
-export interface access_token {
+interface AccessToken {
+  access_token: string
+}
+
+export interface ObjAccessToken {
   access_token: string
 }

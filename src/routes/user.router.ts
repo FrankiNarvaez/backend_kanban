@@ -1,29 +1,29 @@
 import { Router } from 'express'
-import { userController } from '../controllers/user.controller.js'
+// import { userController } from '../controllers/user.controller.js'
 
 const router = Router()
 // Verbos HTTP
 
 // GET
-router.get('/users', userController.getUsers)
-router.get('/users/:id', userController.getUser)
-router.get('/users/:id/sections', userController.getSections)
-router.get('/users/:id/sections/:sectionId', userController.getSection)
-router.get('/users/:id/sections/:sectionId/tasks', userController.getTasks)
-router.get('/users/:id/sections/:sectionId/tasks/:taskId', userController.getTask)
+/* router.get('/users', userController.getUsers as any)
+router.get('/users/:id', userController.getUser as any)
+router.get('/users/:id/sections', userController.getSections as any)
+router.get('/users/:id/sections/:sectionId', userController.getSection as any)
+router.get('/users/:id/sections/:sectionId/tasks', userController.getTasks as any)
+router.get('/users/:id/sections/:sectionId/tasks/:taskId', userController.getTask as any)
 
 // POST
-router.post('/users/:id/sections', userController.createSection)
-router.post('/users/:id/sections/:sectionId/tasks', userController.createTask)
+router.post('/users/:id/sections', userController.createSection as any)
+router.post('/users/:id/sections/:sectionId/tasks', userController.createTask as any)
 
 // DELETE
-router.delete('/users/:id/sections/:sectionId', userController.deleteSection)
-router.delete('/users/:id/sections/:sectionId/tasks/:taskId', userController.deleteTask)
+router.delete('/users/:id/sections/:sectionId', userController.deleteSection as any)
+router.delete('/users/:id/sections/:sectionId/tasks/:taskId', userController.deleteTask as any)
 
 // PATCH
-router.patch('/users/:id/sections/:sectionId', userController.updateNameSection)
-router.patch('/users/:id/sections/:sectionId/tasksI/:taskId', userController.updateNameTask)
-router.patch('/users/:id/sections/:sectionId/tasksU/:taskId', userController.updateSectionIdTask)
+router.patch('/users/:id/sections/:sectionId', userController.updateNameSection as any)
+router.patch('/users/:id/sections/:sectionId/tasksI/:taskId', userController.updateNameTask as any)
+router.patch('/users/:id/sections/:sectionId/tasksU/:taskId', userController.updateSectionIdTask as any) */
 
 // Simplified version
 
