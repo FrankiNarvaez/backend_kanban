@@ -2,7 +2,7 @@ import bcrypt from 'bcryptjs'
 import jwt from 'jsonwebtoken'
 import { authModel } from '../models/auth.model'
 import { validateLogin, validateRegister } from '../schemas/auth.schema'
-import { ResponseValidate } from '../types'
+import { ResponseValidate, User } from '../types'
 import { Request, Response } from 'express'
 
 const login = async (req: Request, res: Response): Promise<Response> => {
@@ -15,9 +15,9 @@ const login = async (req: Request, res: Response): Promise<Response> => {
       return res.status(400).json({ error: 'Invalid data' })
     }
 
-    const user = await authModel.findUserByEmail(data.email)
+    const user: User | undefined = await authModel.findUserByEmail(data.email) as User
 
-    if (!user) {
+    if (user === undefined) {
       return res.status(400).json({ error: 'User not found' })
     }
 
@@ -27,7 +27,9 @@ const login = async (req: Request, res: Response): Promise<Response> => {
       return res.status(400).json({ error: 'Invalid password' })
     }
 
-    const token = jwt.sign({ user_id: user.user_id }, process.env.JWT_SECRET, { expiresIn: '1h' })
+    const secretJWT: string = process.env.JWT_SECRET as string
+
+    const token = jwt.sign({ user_id: user.user_id }, secretJWT, { expiresIn: '1h' })
 
     return res.cookie('access_token', token, { httpOnly: true, sameSite: 'strict' }).send({ message: 'Logged in' })
   } catch (error) {
@@ -35,7 +37,18 @@ const login = async (req: Request, res: Response): Promise<Response> => {
   }
 }
 const register = () => null
-const logout = () => null
+
+const logout = async (_: Request, res: Response): Promise<Response> => {
+  try {
+    return res.clearCookie('access_token').json({ message: 'Logout successful' })
+  } catch (error) {
+    console.log(error)
+    return res.status(500).json({
+      ok: false,
+      message: 'Internal server error'
+    })
+  }
+}
 
 const kanban = () => null
 
