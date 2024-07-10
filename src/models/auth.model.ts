@@ -13,7 +13,6 @@ const createUser = async (infoUser: { username: string, email: string, password:
 // Encontrar un usuario por email
 const findUserByEmail = async (email: string): Promise<object> => {
   const { rows }: Object<User> = await pool.query('SELECT * FROM users WHERE email = $1', [email])
-
   return rows[0]
 }
 
