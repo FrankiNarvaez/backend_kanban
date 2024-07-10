@@ -4,9 +4,9 @@ interface Response {
   password: string
 }
 
-export type ResponseVal = boolean | Reponse | object[]
+type ResponseVal = boolean | Response
+
 export interface ResponseValidate {
   success: boolean
   data?: Response
-  error?: object[]
 }

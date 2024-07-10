@@ -2,7 +2,7 @@ import bcrypt from 'bcryptjs'
 import jwt from 'jsonwebtoken'
 import { authModel } from '../models/auth.model'
 import { validateLogin, validateRegister } from '../schemas/auth.schema'
-import { ResponseValidate, ResponseVal } from '../types'
+import { ResponseValidate } from '../types'
 
 const login = (req: Request, res: any): any => {
   try {
@@ -10,12 +10,12 @@ const login = (req: Request, res: any): any => {
       return res.status(400).json({ error: 'Invalid data' })
     }
 
-    const responseValidated: ResponseVal = validateLogin(req.body)
+    const responseValidated: ResponseValidate = validateLogin(req.body) as ResponseValidate
 
     const { success, data } = responseValidated
 
     if (!success) {
-      return res.status(400).json({ error: '  Invalid data' })
+      return res.status(400).json({ error: 'Invalid data' })
     }
 
     const user = await authModel.findUserByEmail(data.email)
