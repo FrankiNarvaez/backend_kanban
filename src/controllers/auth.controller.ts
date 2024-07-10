@@ -56,9 +56,9 @@ const register = async (req: Request, res: Response): Promise<Response> => {
     const salt: string = bcrypt.genSaltSync(10)
 
     const hashedPassword: string = bcrypt.hashSync(password, salt)
-    const newUser: User = await authModel.createUser({username,email,password:hashedPassword}) as User
+    const newUser: User = await authModel.createUser({ username, email, password: hashedPassword }) as User
     const secretJWT: string = process.env.JWT_SECRET as string
-    const token = jwt.sign({ user_id: newUser.user_id }, secretJWT , { expiresIn: '5h' })
+    const token = jwt.sign({ user_id: newUser.user_id }, secretJWT, { expiresIn: '5h' })
     return res.status(200).json({ ok: true, message: token })
   } catch (error) {
     console.log(error)
