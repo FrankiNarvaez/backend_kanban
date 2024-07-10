@@ -1,11 +1,13 @@
 import { Router } from 'express'
-// import { userController } from '../controllers/user.controller.js'
-
+import { userController } from '../controllers/user.controller'
+import { verifyToken } from '../middlewares/jwt.middleware'
 const router = Router()
+
+router.use(verifyToken)
 // Verbos HTTP
 
 // GET
-/* router.get('/users', userController.getUsers as any)
+router.get('/users', userController.getUsers as any)
 router.get('/users/:id', userController.getUser as any)
 router.get('/users/:id/sections', userController.getSections as any)
 router.get('/users/:id/sections/:sectionId', userController.getSection as any)
@@ -23,7 +25,7 @@ router.delete('/users/:id/sections/:sectionId/tasks/:taskId', userController.del
 // PATCH
 router.patch('/users/:id/sections/:sectionId', userController.updateNameSection as any)
 router.patch('/users/:id/sections/:sectionId/tasksI/:taskId', userController.updateNameTask as any)
-router.patch('/users/:id/sections/:sectionId/tasksU/:taskId', userController.updateSectionIdTask as any) */
+router.patch('/users/:id/sections/:sectionId/tasksU/:taskId', userController.updateSectionIdTask as any)
 
 // Simplified version
 

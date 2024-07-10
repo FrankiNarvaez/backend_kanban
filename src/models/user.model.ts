@@ -1,4 +1,4 @@
-import { pool } from '../database/connection.database.js'
+import { pool } from '../database/connection.database'
 import { User, Section, Task } from '../types.js'
 
 // Get all users from the database

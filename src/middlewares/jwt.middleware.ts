@@ -1,4 +1,4 @@
-import { NextFunction, Request, Response } from 'express'
+import { Request, NextFunction, Response } from 'express'
 import jwt from 'jsonwebtoken'
 
 const secretJWT: string = process.env.JWT_SECRET as string
@@ -14,7 +14,7 @@ export const verifyToken = (req: Request, res: Response, next: NextFunction): an
 
   try {
     const { user_id: userId } = jwt.verify(token, secretJWT) as jwt.JwtPayload
-    (req as any).user_id = userId
+    (req as any).user_id = parseInt(userId)
 
     next()
   } catch (error) {

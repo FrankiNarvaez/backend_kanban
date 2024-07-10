@@ -1,20 +1,21 @@
-/* import { userModel } from '../models/user.model'
-import { Request, Response } from 'express'
+import { userModel } from '../models/user.model'
+import { Response } from 'express'
+import { RequestWithUserId } from '../types'
+
 // get Users of the database
-const getUsers = async (req: Request, res: Response): Promise<void> => {
+const getUsers = async (req: RequestWithUserId, res: Response): Promise<void> => {
   try {
-    console.log(req.body.user_id)
+    console.log(req.user_id)
     const users = await userModel.getUsers()
     res.json(users)
   } catch (error) {
-    console.log(error)
     res.status(500).json({
       message: 'An error occurred while getting users'
     })
   }
 }
 // get a User of the database
-const getUser = async (req: Request, res: Response): Promise <Response> | Promise<undefined> => {
+const getUser = async (req: RequestWithUserId, res: Response): Promise<any> => {
   try {
     if (req.body.user_id !== req.params.id) {
       return res.status(403).json({
@@ -30,16 +31,19 @@ const getUser = async (req: Request, res: Response): Promise <Response> | Promis
     })
   }
 }
+
 // get a User's Sections of the database
-const getSections = async (req: Request, res: Response): Promise<any> => {
+const getSections = async (req: RequestWithUserId, res: Response): Promise<any> => {
   try {
-    if (req.body.user_id !== req.params.id) {
+    const idParams = parseInt(req.params.id)
+
+    if (req.user_id !== idParams) {
       return res.status(403).json({
         message: 'Forbidden'
       })
     }
 
-    const sections = await userModel.getSections(req.params.id)
+    const sections = await userModel.getSections(idParams)
     res.json(sections)
   } catch (error) {
     console.log(error)
@@ -48,16 +52,19 @@ const getSections = async (req: Request, res: Response): Promise<any> => {
     })
   }
 }
+
 // get a User's Section of the database
-const getSection = async (req, res) => {
+const getSection = async (req: RequestWithUserId, res: Response): Promise<any> => {
   try {
-    if (req.user_id !== req.params.id) {
+    const idParams = parseInt(req.params.id)
+
+    if (req.user_id !== idParams) {
       return res.status(403).json({
         message: 'Forbidden'
       })
     }
 
-    const section = await userModel.getSection(req.params.sectionId)
+    const section = await userModel.getSection(parseInt(req.params.sectionId))
     res.json(section)
   } catch (error) {
     console.log(error)
@@ -66,16 +73,19 @@ const getSection = async (req, res) => {
     })
   }
 }
+
 // get a User's Section's Tasks of the database
-const getTasks = async (req, res) => {
+const getTasks = async (req: RequestWithUserId, res: Response): Promise<any> => {
   try {
-    if (req.user_id !== req.params.id) {
+    const idParams = parseInt(req.params.id)
+
+    if (req.user_id !== idParams) {
       return res.status(403).json({
         message: 'Forbidden'
       })
     }
 
-    const tasks = await userModel.getTasks(req.params.id, req.params.sectionId)
+    const tasks = await userModel.getTasks(idParams, parseInt(req.params.sectionId))
     res.json(tasks)
   } catch (error) {
     console.log(error)
@@ -85,15 +95,17 @@ const getTasks = async (req, res) => {
   }
 }
 // get a User's Section's Task of the database
-const getTask = async (req, res) => {
+const getTask = async (req: RequestWithUserId, res: Response): Promise<any> => {
   try {
-    if (req.user_id !== req.params.id) {
+    const idParams = parseInt(req.params.id)
+
+    if (req.user_id !== idParams) {
       return res.status(403).json({
         message: 'Forbidden'
       })
     }
 
-    const task = await userModel.getTask(req.params.taskId)
+    const task = await userModel.getTask(parseInt(req.params.taskId))
     res.json(task)
   } catch (error) {
     console.log(error)
@@ -103,16 +115,18 @@ const getTask = async (req, res) => {
   }
 }
 // create a Section in the database related to a User
-const createSection = async (req, res) => {
+const createSection = async (req: RequestWithUserId, res: Response): Promise<any> => {
   try {
-    if (req.user_id !== req.params.id) {
+    const idParams = parseInt(req.params.id)
+
+    if (req.user_id !== idParams) {
       return res.status(403).json({
         message: 'Forbidden'
       })
     }
 
     const section = await userModel.createSection({
-      userId: req.params.id,
+      userId: idParams,
       sectionName: req.body.sectionName
     })
     res.json(section)
@@ -124,16 +138,18 @@ const createSection = async (req, res) => {
   }
 }
 // create a Task in the database related to a Section
-const createTask = async (req, res) => {
+const createTask = async (req: RequestWithUserId, res: Response): Promise<any> => {
   try {
-    if (req.user_id !== req.params.id) {
+    const idParams = parseInt(req.params.id)
+
+    if (req.user_id !== idParams) {
       return res.status(403).json({
         message: 'Forbidden'
       })
     }
 
     const task = await userModel.createTask({
-      sectionId: req.params.sectionId,
+      sectionId: parseInt(req.params.sectionId),
       taskName: req.body.taskName
     })
     res.json(task)
@@ -146,15 +162,17 @@ const createTask = async (req, res) => {
 }
 
 // Delete a Section from the database
-const deleteSection = async (req, res) => {
+const deleteSection = async (req: RequestWithUserId, res: Response): Promise<any> => {
   try {
-    if (req.user_id !== req.params.id) {
+    const idParams = parseInt(req.params.id)
+
+    if (req.user_id !== idParams) {
       return res.status(403).json({
         message: 'Forbidden'
       })
     }
 
-    await userModel.deleteSection(req.params.sectionId)
+    await userModel.deleteSection(parseInt(req.params.sectionId))
     res.json({
       message: 'Section deleted successfully'
     })
@@ -167,15 +185,17 @@ const deleteSection = async (req, res) => {
 }
 
 // Delete a Task from the database
-const deleteTask = async (req, res) => {
+const deleteTask = async (req: RequestWithUserId, res: Response): Promise<any> => {
   try {
-    if (req.user_id !== req.params.id) {
+    const idParams = parseInt(req.params.id)
+
+    if (req.user_id !== idParams) {
       return res.send(403).json({
         message: 'Forbidden'
       })
     }
 
-    await userModel.deleteTask(req.params.taskId)
+    await userModel.deleteTask(parseInt(req.params.taskId))
     res.json({
       message: 'Task deleted successfully'
     })
@@ -188,15 +208,17 @@ const deleteTask = async (req, res) => {
 }
 
 // Update a section_name of the database
-const updateNameSection = async (req, res) => {
+const updateNameSection = async (req: RequestWithUserId, res: Response): Promise<any> => {
   try {
-    if (req.user_id !== req.params.id) {
+    const idParams = parseInt(req.params.id)
+
+    if (req.user_id !== idParams) {
       return res.status(403).json({
         message: 'Forbidden'
       })
     }
 
-    await userModel.updateNameSection(req.params.sectionId, req.body.sectionName)
+    await userModel.updateNameSection(parseInt(req.params.sectionId), req.body.sectionName)
     res.json({
       message: 'Section updated successfully'
     })
@@ -209,15 +231,17 @@ const updateNameSection = async (req, res) => {
 }
 
 // Update a task_name of the database
-const updateNameTask = async (req, res) => {
+const updateNameTask = async (req: RequestWithUserId, res: Response): Promise<any> => {
   try {
-    if (req.user_id !== req.params.id) {
+    const idParams = parseInt(req.params.id)
+
+    if (req.user_id !== idParams) {
       return res.status(403).json({
         message: 'Forbidden'
       })
     }
 
-    await userModel.updateNameTask(req.params.taskId, req.body.taskName)
+    await userModel.updateNameTask(parseInt(req.params.taskId), req.body.taskName)
     res.json({
       message: 'Task updated successfully'
     })
@@ -230,15 +254,17 @@ const updateNameTask = async (req, res) => {
 }
 
 // Update a section_id of the task in the database
-const updateSectionIdTask = async (req, res) => {
+const updateSectionIdTask = async (req: RequestWithUserId, res: Response): Promise<any> => {
   try {
-    if (req.user_id !== req.params.id) {
+    const idParams = parseInt(req.params.id)
+
+    if (req.user_id !== idParams) {
       return res.status(403).json({
         message: 'Forbidden'
       })
     }
 
-    await userModel.updateSectionIdTask(req.params.taskId, req.body.sectionId)
+    await userModel.updateSectionIdTask(parseInt(req.params.taskId), req.body.sectionId)
     res.json({
       message: 'Task updated successfully'
     })
@@ -265,4 +291,3 @@ export const userController = {
   updateNameTask,
   updateSectionIdTask
 }
- */

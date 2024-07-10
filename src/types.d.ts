@@ -1,3 +1,5 @@
+import { Request } from 'express'
+
 interface ContentSchemaResponse {
   username?: string
   email: string
@@ -39,3 +41,13 @@ interface AccessToken {
 export interface ObjAccessToken {
   access_token: string
 }
+
+/* export interface RequestWithUserId extends Request {
+  user_id: number
+} */
+
+interface AddUserId {
+  user_id: number
+}
+
+export type RequestWithUserId = Request & AddUserId
