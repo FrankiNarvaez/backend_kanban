@@ -2,6 +2,7 @@ import bcrypt from 'bcryptjs'
 import jwt from 'jsonwebtoken'
 import { authModel } from '../models/auth.model'
 import { validateLogin, validateRegister } from '../schemas/auth.schema'
+import { ResponseValidate, ResponseVal } from '../types'
 
 const login = (req: Request, res: any): any => {
   try {
@@ -9,10 +10,12 @@ const login = (req: Request, res: any): any => {
       return res.status(400).json({ error: 'Invalid data' })
     }
 
-    const { success, data } = validateLogin(req.body)
+    const responseValidated: ResponseVal = validateLogin(req.body)
+
+    const { success, data } = responseValidated
 
     if (!success) {
-      return res.status(400).json({ error: 'Invalid data' })
+      return res.status(400).json({ error: '  Invalid data' })
     }
 
     const user = await authModel.findUserByEmail(data.email)
@@ -29,7 +32,7 @@ const login = (req: Request, res: any): any => {
 
     const token = jwt.sign({ user_id: user.user_id }, process.env.JWT_SECRET, { expiresIn: '1h' })
 
-    res.cookie('access_token', token, { httpOnly: true, sameSite: 'strict' }).send({ message: 'Logged in'})
+    return res.cookie('access_token', token, { httpOnly: true, sameSite: 'strict' }).send({ message: 'Logged in' })
   } catch (error) {
     return res.status(500).json({ error: 'Internal server error' })
   }
