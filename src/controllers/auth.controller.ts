@@ -3,8 +3,9 @@ import jwt from 'jsonwebtoken'
 import { authModel } from '../models/auth.model'
 import { validateLogin, validateRegister } from '../schemas/auth.schema'
 import { ResponseValidate } from '../types'
+import { Request, Response } from 'express'
 
-const login = (req: Request, res: any): any => {
+const login = async (req: Request, res: Response): Promise<any> => {
   try {
     if (req.body === null) {
       return res.status(400).json({ error: 'Invalid data' })
@@ -14,7 +15,7 @@ const login = (req: Request, res: any): any => {
 
     const { success, data } = responseValidated
 
-    if (!success) {
+    if (!success || data === undefined) {
       return res.status(400).json({ error: 'Invalid data' })
     }
 
