@@ -78,15 +78,15 @@ const logout = async (_: Request, res: Response): Promise<Response> => {
   }
 }
 
-const kanban = async (req: Request, res: Response): Promise<Response> => {
-  try {
+const kanban = (_req: Request, res: Response): any => {
+  /* try {
     const { cookies } = req
 
     if (!cookies.access_token) {
       return res.status(401).json({
         ok: false,
         message: 'Unauthorized'
-      })  
+      })
     }
 
     const user = await authModel.findOneById(req.user_id)
@@ -100,7 +100,8 @@ const kanban = async (req: Request, res: Response): Promise<Response> => {
       ok: false,
       message: 'Internal server error'
     })
-  }
+  } */
+  res.send('Hello World!')
 }
 
 export const AuthController = {
