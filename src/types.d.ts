@@ -20,6 +20,18 @@ export interface User {
   password: string
 }
 
+export interface Section {
+  section_id?: number
+  section_name: string
+  user_id: number
+}
+
+export interface Task {
+  task_id: number
+  task_name: string
+  section_id: number
+}
+
 export interface access_token {
   access_token: string
 }
