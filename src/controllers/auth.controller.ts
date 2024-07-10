@@ -7,10 +7,6 @@ import { Request, Response } from 'express'
 
 const login = async (req: Request, res: Response): Promise<any> => {
   try {
-    if (req.body === null) {
-      return res.status(400).json({ error: 'Invalid data' })
-    }
-
     const responseValidated: ResponseValidate = validateLogin(req.body) as ResponseValidate
 
     const { success, data } = responseValidated
