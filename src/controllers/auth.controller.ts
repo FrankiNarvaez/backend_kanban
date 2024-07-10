@@ -36,7 +36,35 @@ const login = async (req: Request, res: Response): Promise<Response> => {
     return res.status(500).json({ error: 'Internal server error' })
   }
 }
-const register = () => null
+const register = async (req: Request, res: Response): Promise<Response> => {
+  try {
+    const responseValidated: ResponseValidate = validateRegister(req.body) as ResponseValidate
+
+    const { success, data } = responseValidated
+    if (!success || data === undefined || data.username === undefined) {
+      return res.status(400).json({ ok: false, message: 'Invalid data' })
+    }
+
+    const { username, email, password } = data
+
+    const user: User | undefined = await authModel.findUserByEmail(data.email) as User
+
+    if (user === undefined) {
+      return res.status(400).json({ ok: false, message: 'Email already exists' })
+    }
+
+    const salt: string = bcrypt.genSaltSync(10)
+
+    const hashedPassword: string = bcrypt.hashSync(password, salt)
+    const newUser: User = await authModel.createUser({username,email,password:hashedPassword}) as User
+    const secretJWT: string = process.env.JWT_SECRET as string
+    const token = jwt.sign({ user_id: newUser.user_id }, secretJWT , { expiresIn: '5h' })
+    return res.status(200).json({ ok: true, message: token })
+  } catch (error) {
+    console.log(error)
+    return res.status(500).json({ ok: false, message: 'Internal server error' })
+  }
+}
 
 const logout = async (_: Request, res: Response): Promise<Response> => {
   try {
