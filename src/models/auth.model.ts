@@ -1,15 +1,5 @@
 import { pool } from '../database/connection.database'
-
-interface Object<T> {
-  rows: T[]
-}
-
-interface User {
-  user_id: number
-  user_name: string
-  email: string
-  password: string
-}
+import { User, Object } from '../types'
 
 // Create a new user in the user's table
 const createUser = async (infoUser: { username: string, email: string, password: string }): Promise<object> => {
