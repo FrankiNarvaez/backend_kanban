@@ -8,7 +8,6 @@ import { Request, Response } from 'express'
 const login = async (req: Request, res: Response): Promise<Response> => {
   try {
     const responseValidated: ResponseValidate = validateLogin(req.body) as ResponseValidate
-
     const { success, data } = responseValidated
 
     if (!success || data === undefined) {
@@ -39,7 +38,7 @@ const login = async (req: Request, res: Response): Promise<Response> => {
 const register = async (req: Request, res: Response): Promise<Response> => {
   try {
     const responseValidated: ResponseValidate = validateRegister(req.body) as ResponseValidate
-
+    console.log(responseValidated)
     const { success, data } = responseValidated
     if (!success || data === undefined || data.username === undefined) {
       return res.status(400).json({ ok: false, message: 'Invalid data' })
@@ -52,7 +51,6 @@ const register = async (req: Request, res: Response): Promise<Response> => {
     if (user === undefined) {
       return res.status(400).json({ ok: false, message: 'Email already exists' })
     }
-
     const salt: string = bcrypt.genSaltSync(10)
 
     const hashedPassword: string = bcrypt.hashSync(password, salt)
@@ -65,8 +63,7 @@ const register = async (req: Request, res: Response): Promise<Response> => {
     return res.status(500).json({ ok: false, message: 'Internal server error' })
   }
 }
-
-const logout = async (_: Request, res: Response): Promise<Response> => {
+const logout = async (_: Request, res: Response) => {
   try {
     return res.clearCookie('access_token').json({ message: 'Logout successful' })
   } catch (error) {

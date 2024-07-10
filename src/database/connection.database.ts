@@ -1,7 +1,7 @@
-import pg from 'pg';
+import pg from 'pg'
 import 'dotenv/config'
 
-const connectionString = process.env.DATABASE_URL;
+const connectionString: string = process.env.DATABASE_URL as string
 
 export const pool = new pg.Pool({
   allowExitOnIdle: true,
