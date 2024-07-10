@@ -2,7 +2,7 @@
 
 Este repositorio contiene el backend de una aplicación web estilo Kanban, en la rama main esta el backend escrito en JavaScript y en la rama TS_main esta el backend escrito en TypeScript.
 
-Rama con JavaScript: https://github.com/FrankiNarvaez/backend_kanban/tree/main
+Rama con JavaScript: https://github.com/FrankiNarvaez/backend_kanban/tree/main \n
 Rama con TypeScript: https://github.com/FrankiNarvaez/backend_kanban/tree/TS_main
 
 ## Clonar el Repositorio
