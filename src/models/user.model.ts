@@ -81,6 +81,24 @@ const updateSectionIdTask = async (taskId: number, sectionId: number): Promise<v
   await pool.query('UPDATE tasks SET section_id = $1 WHERE task_id = $2', [sectionId, taskId])
 }
 
+const updateSecionPositionRight = async (initialPos: number, finalPos: number): Promise<void> => {
+  await pool.query('UPDATE section SET index_section = (SELECT index_section FROM section WHERE section_id = $2) WHERE section_id = $1;', [initialPos, finalPos])
+  await pool.query('UPDATE section SET index_section = index_section-1  WHERE index_section <=(SELECT index_section FROM section WHERE section_id = $2) AND section_id != $1', [initialPos, finalPos])
+}
+
+const updateSecionPositionLeft = async (initialPos: number, finalPos: number): Promise<void> => {
+  await pool.query('UPDATE section SET index_section = (SELECT index_section FROM section WHERE section_id = $2) WHERE section_id = $1;', [initialPos, finalPos])
+  await pool.query('UPDATE section SET index_section = index_section+1  WHERE index_section >=(SELECT index_section FROM section WHERE section_id =$2) AND section_id != $1', [initialPos, finalPos])
+}
+
+const updateSectionPosition = (initialPos: number, finalPos: number, idIntialSection: number, idFinalSection: number): any => {
+  if (initialPos < finalPos) {
+    return updateSecionPositionRight(idIntialSection, idFinalSection)
+  } else {
+    return updateSecionPositionLeft(idIntialSection, idFinalSection)
+  }
+}
+
 export const userModel = {
   getUsers,
   getUser,
@@ -94,5 +112,6 @@ export const userModel = {
   deleteTask,
   updateNameSection,
   updateNameTask,
-  updateSectionIdTask
+  updateSectionIdTask,
+  updateSectionPosition
 }
