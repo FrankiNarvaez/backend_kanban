@@ -3,13 +3,13 @@ import { User, Section, Task } from '../types.js'
 
 // Get all users from the database
 const getUsers = async (): Promise<User[]> => {
-  const { rows } = await pool.query('SELECT * FROM users')
+  const { rows } = await pool.query('SELECT user_id, user_name, email, id_theme FROM users')
   return rows
 }
 
 // Get a user from the database
 const getUser = async (userId: number): Promise<User> => {
-  const { rows } = await pool.query('SELECT * FROM users WHERE user_id = $1', [userId])
+  const { rows } = await pool.query('SELECT user_id, user_name, email, id_theme FROM users WHERE user_id = $1', [userId])
   return rows[0]
 }
 

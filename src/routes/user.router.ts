@@ -27,7 +27,6 @@ router.patch('/users/:id/sections/:sectionId', userController.updateNameSection 
 router.patch('/users/:id/sections/:sectionId/tasksI/:taskId', userController.updateNameTask as any)
 router.patch('/users/:id/sections/:sectionId/tasksU/:taskId', userController.updateSectionIdTask as any)
 router.patch('/users/updatePosSection', userController.updateSectionPosition as any)
-
 // Simplified version
 
 // GET
