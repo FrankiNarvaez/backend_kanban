@@ -90,21 +90,22 @@ const updateSectionIdTask = async (taskId: number, startIndex: number, endIndex:
   }
 }
 
-const updateSecionPositionRight = async (initialPos: number, finalPos: number): Promise<void> => {
-  await pool.query('UPDATE section SET index_section = (SELECT index_section FROM section WHERE section_id = $2) WHERE section_id = $1;', [initialPos, finalPos])
-  await pool.query('UPDATE section SET index_section = index_section-1  WHERE index_section <=(SELECT index_section FROM section WHERE section_id = $2) AND section_id != $1', [initialPos, finalPos])
+const updateSecionPositionRight = async (sectionId: number,  initialPos: number, finalPos: number): Promise<void> => {
+  await pool.query('UPDATE section SET index_section = $1 WHERE section_id = $2;', [finalPos, sectionId])
+  await pool.query('UPDATE section SET index_section = index_section-1  WHERE index_section BETWEEN $1 AND $2 AND section_id != $3', [initialPos, finalPos, sectionId])
+
 }
 
-const updateSecionPositionLeft = async (initialPos: number, finalPos: number): Promise<void> => {
-  await pool.query('UPDATE section SET index_section = (SELECT index_section FROM section WHERE section_id = $2) WHERE section_id = $1;', [initialPos, finalPos])
-  await pool.query('UPDATE section SET index_section = index_section+1  WHERE index_section >=(SELECT index_section FROM section WHERE section_id =$2) AND section_id != $1', [initialPos, finalPos])
+const updateSecionPositionLeft = async (sectionId: number, finalPos: number): Promise<void> => {
+  await pool.query('UPDATE section SET index_section = $1 WHERE section_id = $2;', [finalPos, sectionId])
+  await pool.query('UPDATE section SET index_section = index_section+1  WHERE index_section >= $1 AND section_id != $2', [finalPos, sectionId])
 }
 
-const updateSectionPosition = (initialPos: number, finalPos: number, idIntialSection: number, idFinalSection: number): any => {
+const updateSectionPosition = (sectionId: number, initialPos: number, finalPos: number): any => {
   if (initialPos < finalPos) {
-    return updateSecionPositionRight(idIntialSection, idFinalSection)
+    return updateSecionPositionRight(sectionId, initialPos, finalPos)
   } else {
-    return updateSecionPositionLeft(idIntialSection, idFinalSection)
+    return updateSecionPositionLeft(sectionId, finalPos)
   }
 }
 
