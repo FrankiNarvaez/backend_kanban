@@ -90,10 +90,9 @@ const updateSectionIdTask = async (taskId: number, startIndex: number, endIndex:
   }
 }
 
-const updateSecionPositionRight = async (sectionId: number,  initialPos: number, finalPos: number): Promise<void> => {
+const updateSecionPositionRight = async (sectionId: number, initialPos: number, finalPos: number): Promise<void> => {
   await pool.query('UPDATE section SET index_section = $1 WHERE section_id = $2;', [finalPos, sectionId])
   await pool.query('UPDATE section SET index_section = index_section-1  WHERE index_section BETWEEN $1 AND $2 AND section_id != $3', [initialPos, finalPos, sectionId])
-
 }
 
 const updateSecionPositionLeft = async (sectionId: number, finalPos: number): Promise<void> => {

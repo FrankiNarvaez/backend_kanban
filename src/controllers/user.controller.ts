@@ -287,7 +287,7 @@ const updateSectionPosition = async (req: RequestWithUserId, res: Response): Pro
         message: 'Forbidden'
       })
     }
-    await userModel.updateSectionPosition(req.body.idIntialSection, req.body.idFinalSection, req.body.idInitialSection, req.body.idFinalSection)
+    await userModel.updateSectionPosition(req.body.sectionId, req.body.initialPos, req.body.finalPos)
   } catch (error) {
     res.status(500).json({
       message: 'an error ocurred while updating section position'
