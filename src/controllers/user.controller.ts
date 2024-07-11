@@ -266,7 +266,7 @@ const updateSectionIdTask = async (req: RequestWithUserId, res: Response): Promi
       })
     }
 
-    await userModel.updateSectionIdTask(parseInt(req.params.taskId), parseInt(req.params.taskId2), req.body.sectionId)
+    await userModel.updateSectionIdTask(parseInt(req.params.taskId), parseInt(req.params.startIndex), parseInt(req.params.endIndex), req.body.sectionId)
     res.json({
       message: 'Task updated successfully'
     })
