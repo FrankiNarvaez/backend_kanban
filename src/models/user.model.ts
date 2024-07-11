@@ -77,8 +77,17 @@ const updateNameTask = async (taskId: number, taskName: string): Promise<void> =
 }
 
 // Update section_id of the task in the database
-const updateSectionIdTask = async (taskId: number, sectionId: number): Promise<void> => {
+const updateSectionIdTask = async (taskId: number, startIndex: number, endIndex: number, sectionId: number): Promise<void> => {
   await pool.query('UPDATE tasks SET section_id = $1 WHERE task_id = $2', [sectionId, taskId])
+  // -- Se cambia el index de la sección 4 al index de la sección 2
+  await pool.query ('UPDATE tasks SET index_task = $2 WHERE taskId = $1', [taskId, endIndex]); 
+  if (startIndex > endIndex) {
+      // Se incrementa el index de las secciones que estén a la derecha de la tarea 2 expetuando la tarea 4
+      await pool.query ('UPDATE section SET index_task = index_task+1 WHERE index_task >= $2 AND task_id != $1', [taskId, endIndex])
+  }else {
+      // Se reduce el index de las secciones que estén a la izquierda de la tarea 2 expetuando la tarea 4
+      await pool.query ('UPDATE section SET index_task = index_task-1 WHERE index_task BETWEEN $2 AND $3 AND task_id != $1', [taskId, startIndex, endIndex])
+  }
 }
 
 const updateSecionPositionRight = async (initialPos: number, finalPos: number): Promise<void> => {
