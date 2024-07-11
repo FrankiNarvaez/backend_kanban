@@ -12,6 +12,7 @@ app.use(express.json())
 app.use(express.text())
 
 app.get('/', (_req, res) => {
+  res.header('Access-Control-Allow-Origin', '*')
   console.log('Hello my friend')
   res.send('Hello World!')
 })
