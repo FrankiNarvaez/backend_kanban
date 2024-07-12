@@ -2,11 +2,12 @@ import express from 'express'
 import authRouter from './routes/auth.router'
 import userRouter from './routes/user.router'
 import cookieParser from 'cookie-parser'
-
+import cors from 'cors'
 const PORT = 3000
 
 const app = express()
 app.disable('x-powered-by')
+app.use(cors())
 app.use(cookieParser())
 app.use(express.json())
 app.use(express.text())
