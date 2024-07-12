@@ -1,5 +1,7 @@
 import { Request } from 'express'
 
+export const headerCookie = res.header('Access-Control-Allow-Origin', '*')
+
 interface ContentSchemaResponse {
   username?: string
   email: string
