@@ -3,7 +3,7 @@ import authRouter from './routes/auth.router'
 import userRouter from './routes/user.router'
 import cookieParser from 'cookie-parser'
 import cors from 'cors'
-const PORT = 3000
+const PORT = process.env.PORT || 3000
 
 const app = express()
 app.disable('x-powered-by')
