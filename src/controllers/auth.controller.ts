@@ -28,7 +28,7 @@ const login = async (req: Request, res: Response): Promise<Response> => {
 
     const token = jwt.sign({ user_id: user.user_id }, secretJWT, { expiresIn: '5h' })
 
-    return res.cookie('access_token', token, { httpOnly: true, sameSite: 'strict' }).send({ message: 'Logged in' })
+    return res.cookie('access_token', token, { httpOnly: true, sameSite: 'strict' }).send({ message: user.user_id })
   } catch (error) {
     return res.status(500).json({ error: 'Internal server error' })
   }
