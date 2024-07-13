@@ -278,6 +278,23 @@ const updateSectionIdTask = async (req: RequestWithUserId, res: Response): Promi
   }
 }
 
+const updateUserName = async (req: RequestWithUserId, res: Response): Promise<any> => {
+  try {
+    const idParams = parseInt(req.params.id)
+
+    if (req.user_id !== idParams) {
+      return res.status(403).json({
+        message: 'Forbidden'
+      })
+    }
+    await userModel.updateUserName(idParams, req.body.username)
+  } catch (error) {
+    res.status(500).json({
+      message: 'an error ocurred while updating user name'
+    })
+  }
+}
+
 const updateSectionPosition = async (req: RequestWithUserId, res: Response): Promise<any> => {
   try {
     const idParams = parseInt(req.params.id)
@@ -309,5 +326,6 @@ export const userController = {
   updateNameSection,
   updateNameTask,
   updateSectionIdTask,
-  updateSectionPosition
+  updateSectionPosition,
+  updateUserName
 }

@@ -108,6 +108,10 @@ const updateSectionPosition = (sectionId: number, initialPos: number, finalPos: 
   }
 }
 
+const updateUserName = async (userId: number, userName: string): Promise<void> => {
+  await pool.query('UPDATE users SET user_name = $1 WHERE user_id = $2', [userName, userId])
+}
+
 export const userModel = {
   getUsers,
   getUser,
@@ -122,5 +126,6 @@ export const userModel = {
   updateNameSection,
   updateNameTask,
   updateSectionIdTask,
-  updateSectionPosition
+  updateSectionPosition,
+  updateUserName
 }
